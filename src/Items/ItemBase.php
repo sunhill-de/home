@@ -6,8 +6,11 @@ class ItemBase
 {
     protected $interface;
   
-    public function __construct($interface)
+    protected $item_name;
+    
+    public function __construct(string $item_name, $interface)
     {
+        $this->item_name = $item_name;
         $this->interface = $interface;
     }
 
