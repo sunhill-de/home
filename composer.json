@@ -1,0 +1,34 @@
+{
+	"name" : "sunhill/home",
+	"description" : "The part of the sunhill project that deals with home automation",
+	"type" : "library",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Klaus Dimde",
+			"email" : "klaus@dimde.info"
+		}
+	],
+	"minimum-stability" : "dev",
+	"autoload" : {
+		"psr-4" : {
+			"Sunhill\\Home\\Tests\\" : [
+				"tests",
+				"tests/lib",
+				"tests/objects"
+			],
+			"Sunhill\\Home\\Test\\" : [
+				"tests",
+				"tests/lib",
+				"tests/objects"
+			],
+			"Sunhill\\Home\\" : "src"
+		}
+	},
+	"extra" : {
+		"laravel" : {
+			"providers" : [
+				"Sunhill\\Home\\ObjectsServiceProvider"
+			]
+		}
+	}
+}
