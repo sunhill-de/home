@@ -5,19 +5,25 @@ namespace Sunhill\Home\Items;
 /**
  * Abstract class for switches (items that can bei either "on" or "off"
  */
-abstract class SwitchItem extends ItemBase
+class SwitchItem extends ItemBase
 {
     /**
-     * Abstract method that sets the switch state to the given value
+     * sets the switch state to the given value
      * @param $on bool: The wanted state
      */
-    abstract protected doSwitchTo(bool $on);
+    protected doSwitchTo(bool $on)
+    {
+        $this->interface->setSwitch($this->item_name,$on);
+    }    
     
     /**
-     * Abstract method get return the current state
+     * return the current state of a switch
      * @return bool: The current state
      */
-    abstract protected doGetState(): bool;
+    protected doGetState(): bool
+    {
+        return $this->interface->getSwitch($this->item_name);
+    }    
     
     /**
      * Switches on
