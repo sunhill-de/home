@@ -12,20 +12,21 @@ abstract class InterfaceBase
       {  
       }
   
-      protected function sendCommand(string $name, string $command, $options = null)
+      protected function sendCommand(string $name, $options = null)
       {
       }
 
       public function getSwitch(string $name): bool
       {
           $this->prepareCommand($name);
-          return $this->sendCommand($name,'getLight');          
+          $result = $this->sendCommand($name);
+          return $result->state == 'ON';
       }
   
       public function setSwitch(string $name, bool $on)
       {
           $this->prepareCommand($name);
-          return $this->sendCommand($name,'getLight',$on);          
+          return $this->sendCommand($name,$on);          
       }  
 
 }  
