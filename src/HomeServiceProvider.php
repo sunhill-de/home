@@ -3,6 +3,8 @@
 namespace Sunhill\Home;
 
 use Illuminate\Support\ServiceProvider;
+use Sunhill\InfoMarket\Facades\InfoMarket;
+use Sunhill\Home\Marketeers\OpenHab;
 
 class HomeServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,7 @@ class HomeServiceProvider extends ServiceProvider
                 __DIR__.'/../config/zoneminder.php' => config_path('zoneminder.php'),            
             ], 'config');
           }
+          InfoMarket::installMarketeer(OpenHab::class);
     }
 
 }

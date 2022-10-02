@@ -9,6 +9,7 @@ use Sunhill\Objects\Objects\Floor;
 use Sunhill\Home\Response\FloorResponse;
 use Sunhill\Objects\Objects\Room;
 use Sunhill\Home\Response\RoomResponse;
+use Illuminate\Support\Facades\Schema;
 
 class FloorCollection extends CollectionBase
 {
