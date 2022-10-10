@@ -9,6 +9,7 @@ use Sunhill\Objects\Objects\Floor;
 use Sunhill\Home\Response\FloorResponse;
 use Sunhill\Objects\Objects\Room;
 use Sunhill\Home\Response\RoomResponse;
+use Illuminate\Support\Facades\Schema;
 
 class FloorCollection extends CollectionBase
 {
@@ -24,21 +25,23 @@ class FloorCollection extends CollectionBase
      */
     protected function doInitCollection()
     {
-        $result = Floor::search()->orderBy('level','desc')->get();
-        foreach ($result as $floor) {
-            $floor_response = new FloorResponse($floor);
-            SiteManager::addMainModule($this->cleanStr($floor->name))
-                ->setName($this->cleanStr($floor->name))
-                ->setVisible()
-                ->setDisplayName($this->cleanStr($floor->name))
-                ->addSubEntry('index', $floor_response);
-
-            $rooms = Room::search()->where('part_of','=',$floor)->get();
-            foreach ($rooms as $room) {
-                $room_response = new RoomResponse($room);
-                SiteManager::addSubModule($floor->name,$this->cleanStr($room->name))
+        if (Schema::hasTable('floors')) {
+            $result = Floor::search()->orderBy('level','desc')->get();
+            foreach ($result as $floor) {
+                $floor_response = new FloorResponse($floor);
+                SiteManager::addMainModule($this->cleanStr($floor->name))
+                    ->setName($this->cleanStr($floor->name))
                     ->setVisible()
-                    ->addSubEntry('index',$room_response);
+                    ->setDisplayName($this->cleanStr($floor->name))
+                    ->addSubEntry('index', $floor_response);
+    
+                $rooms = Room::search()->where('part_of','=',$floor)->get();
+                foreach ($rooms as $room) {
+                    $room_response = new RoomResponse($room);
+                    SiteManager::addSubModule($floor->name,$this->cleanStr($room->name))
+                        ->setVisible()
+                        ->addSubEntry('index',$room_response);
+                }
             }
         }
     }
