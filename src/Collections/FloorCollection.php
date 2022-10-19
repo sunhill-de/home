@@ -41,7 +41,7 @@ class FloorCollection extends CollectionBase
                     ->setVisible()
                     ->addSubEntry('index',$room_response);
             }
-        }
+        } 
     }
     
 }
