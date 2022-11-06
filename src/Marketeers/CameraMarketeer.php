@@ -14,11 +14,11 @@
 
 namespace Sunhill\Home\Marketeers;
 
-use Sunhill\InfoMarket\Marketeers\MarketeerBase;
-use Sunhill\InfoMarket\Marketeers\Response\Response;
+use Sunhill\InfoMarket\Market\Marketeer;
+use Sunhill\InfoMarket\Response\Response;
 use Illuminate\Support\Facades\Config;
 
-class CameraMarketeer extends MarketeerBase
+class CameraMarketeer extends Marketeer
 {
 
     protected function getOffering(): array
