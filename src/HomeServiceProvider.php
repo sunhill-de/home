@@ -5,6 +5,7 @@ namespace Sunhill\Home;
 use Illuminate\Support\ServiceProvider;
 use Sunhill\InfoMarket\Facades\InfoMarket;
 use Sunhill\Home\Marketeers\OpenHab;
+use Sunhill\Home\Marketeers\CameraMarketeer;
 
 class HomeServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,7 @@ class HomeServiceProvider extends ServiceProvider
             ], 'config');
           }
           InfoMarket::installMarketeer(OpenHab::class);
+          InfoMarket::installMarketeer(CameraMarketeer::class);
     }
 
 }

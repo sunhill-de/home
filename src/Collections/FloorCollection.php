@@ -43,7 +43,7 @@ class FloorCollection extends CollectionBase
                         ->addSubEntry('index',$room_response);
                 }
             }
-        }
+        } 
     }
     
 }

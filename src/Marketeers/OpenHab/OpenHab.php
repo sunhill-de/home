@@ -14,11 +14,11 @@
 
 namespace Sunhill\Home\Marketeers;
 
-use Sunhill\InfoMarket\Marketeers\MarketeerBase;
-use Sunhill\InfoMarket\Marketeers\Response\Response;
+use Sunhill\InfoMarket\Market\Marketeer;
+use Sunhill\InfoMarket\Response\Response;
 use Illuminate\Support\Facades\Config;
 
-class OpenHab extends MarketeerBase
+class OpenHab extends Marketeer
 {
     
     protected $cached_items;
@@ -29,12 +29,8 @@ class OpenHab extends MarketeerBase
      */
     protected function getOffering(): array
     {
-        if (is_null($this->cached_items)) {
-            $this->fillItemCache();
-        }
         return [
-            'openhab.items.count'=>'ItemCount',
-            'openhab.items.?'=>'Item'
+            'openhab.items'=>OpenHabItems::class,
         ];
     }
     
