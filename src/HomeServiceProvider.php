@@ -25,8 +25,8 @@ class HomeServiceProvider extends ServiceProvider
                 __DIR__.'/../config/zoneminder.php' => config_path('zoneminder.php'),            
             ], 'config');
           }
-          InfoMarket::installMarketeer(OpenHab::class);
-          InfoMarket::installMarketeer(CameraMarketeer::class);
+   //       InfoMarket::installMarketeer(OpenHab::class);
+   //       InfoMarket::installMarketeer(CameraMarketeer::class);
     }
 
 }
