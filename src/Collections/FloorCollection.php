@@ -25,7 +25,7 @@ class FloorCollection extends CollectionBase
      */
     protected function doInitCollection()
     {
-        $result = Floor::search()->orderBy('level','desc')->get();
+ /*      $result = Floor::search()->orderBy('level','desc')->get();
         foreach ($result as $floor) {
             $floor_response = new FloorResponse($floor);
             SiteManager::addMainModule($this->cleanStr($floor->name))
@@ -34,14 +34,14 @@ class FloorCollection extends CollectionBase
                 ->setDisplayName($this->cleanStr($floor->name))
                 ->addSubEntry('index', $floor_response);
 
-            $rooms = Room::search()->where('part_of','=',$floor)->get();
+         //   $rooms = Room::search()->where('part_of','=',$floor)->get();
             foreach ($rooms as $room) {
                 $room_response = new RoomResponse($room);
                 SiteManager::addSubModule($floor->name,$this->cleanStr($room->name))
                     ->setVisible()
                     ->addSubEntry('index',$room_response);
             }
-        } 
+        } */ 
     }
     
 }
