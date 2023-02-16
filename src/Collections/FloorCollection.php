@@ -30,20 +30,9 @@ class FloorCollection extends CollectionBase
             foreach ($result as $floor) {
                 $floor_response = new FloorResponse($floor);
                 SiteManager::addMainModule($this->cleanStr($floor->name))
-                    ->setName($this->cleanStr($floor->name))
-                    ->setVisible()
-                    ->setDisplayName($this->cleanStr($floor->name))
-                    ->addSubEntry('index', $floor_response);
-    
-                $rooms = Room::search()->where('part_of','=',$floor)->get();
-                foreach ($rooms as $room) {
-                    $room_response = new RoomResponse($room);
-                    SiteManager::addSubModule($floor->name,$this->cleanStr($room->name))
-                        ->setVisible()
-                        ->addSubEntry('index',$room_response);
-                }
+                    ->setName($this->cleanStr($floor->name));
             }
-        } 
+        }            
     }
     
 }
