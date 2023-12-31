@@ -3,23 +3,37 @@
 namespace Sunhill\Home\Managers;
 
 use Sunhill\Visual\Facades\SunhillSiteManager;
+use Sunhill\Collection\Objects\Locations\Address;
+use Sunhill\ORM\Facades\Objects;
+use Sunhill\Collection\Objects\Locations\Floor;
+use Sunhill\Collection\Objects\Locations\Room;
+use Sunhill\Home\Modules\SunhillRoom;
 
 class HomeManager 
 {
+    public function getHomeLocation()
+    {
+        return Address::query()->where('name', 'Sonnenhügel 8')->first();
+    }
+    
     public function addFloors()
     {
-        SunhillSiteManager::addDefaultSubmodule('DG','Dachboden','Die Räume des Dachbodens',function($owner) {
-            
-        });            
-        SunhillSiteManager::addDefaultSubmodule('OG','Obergeschoss','Die Räume des Obergeschosses',function($owner) {
-                
-        });
-        SunhillSiteManager::addDefaultSubmodule('EG','Erdgeschoss','Die Räume des Dachbodens',function($owner) {
-                
-        });
-        SunhillSiteManager::addDefaultSubmodule('Garten','Garten','Die Räume des Obergeschosses',function($owner) {
-                    
-        });
+        $location = $this->getHomeLocation();
+        
+        $query = Floor::query()->where('part_of', $location->id)->orderBy('level', 'desc')->get();
+        foreach ($query as $floor) {
+            SunhillSiteManager::addDefaultSubmodule($floor->name,$floor->name,$floor->name,function($owner) use ($floor) {
+               $this->addRooms($owner, $floor);  
+            });                
+        } 
+    }
+    
+    protected function addRooms($owner, $floor)
+    {
+        $query = Room::query()->where('part_of',$floor->id)->get();
+        foreach ($query as $room) {
+            $owner->addSubmodule(new SunhillRoom($room));
+        }
     }
     
     public function getFloors()
