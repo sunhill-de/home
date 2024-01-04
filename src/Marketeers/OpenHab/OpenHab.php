@@ -12,105 +12,25 @@
  * PSR-State: complete
  */
 
-namespace Sunhill\Home\Marketeers;
+namespace Sunhill\Home\Marketeers\OpenHab;
 
 use Sunhill\InfoMarket\Market\Marketeer;
 use Sunhill\InfoMarket\Response\Response;
 use Illuminate\Support\Facades\Config;
+use Sunhill\ORM\InfoMarket\OnDemandMarketeer;
+use Sunhill\Home\Facades\HomeManager;
+use Sunhill\ORM\InfoMarket\Items\DynamicItem;
 
-class OpenHab extends Marketeer
+class OpenHab extends OnDemandMarketeer
 {
     
-    protected $cached_items;
-    
-    /**
-     * Returns what items this marketeer offers
-     * @return array
-     */
-    protected function getOffering(): array
+    protected function initializeMarketeer()
     {
-        return [
-            'openhab.items'=>OpenHabItems::class,
-        ];
-    }
-    
-    private function getServer()
-    {
-        return Config::get('openhab.Protocol').
-        '://'.
-        Config::get('openhab.IP').
-        ':'.
-        Config::get('openhab.Port');        
-    }
-    
-    protected function fillItemCache()
-    {
-        $this->cached_items = [];
-        $connection = curl_init($this->getServer().'/rest/items/');
-        curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
-        $this->cached_items = json_decode(curl_exec($connection));
-    }
-    
-    protected function get_ItemCount()
-    {
-        if (is_null($this->cached_items)) {
-            $this->fillItemCache();
+        $all_items = json_decode(HomeManager::getAllOpenHABItems(), true);
+        $this->addEntry('count',(new DynamicItem())->defineValue(count($all_items))->type('int')->semantic('Count'));
+        foreach ($all_items as $item) {
+            $this->addEntry($item['name'],new OpenHabItem($item));            
         }
-        $response = new Response();
-        return $response->OK()->unit(' ')->type('Integer')->value(count($this->cached_items))->semantic('number')->update('late');
-    }
-    
-    protected function solve_Item()
-    {
-        $result = [];
-        foreach ($this->cached_items as $item) {
-            $result['openhab.items.'.$item->name] = 'Item';
-        }
-        return $result;        
-    }
- 
-    protected function get_Item($name)
-    {
-        $connection = curl_init($this->getServer().'/rest/items/'.$name);
-        curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
-        $item = json_decode(curl_exec($connection));
-        $response = new Response();
-        return $response->OK()->type($this->getType($item))->unit($this->getUnit($item))->semantic($this->getSemantic($item))->update('asap')->value($this->getValue($item));
     }
         
-    private function getUnit($test)
-    {
-        switch ($test->type) {
-            case 'Number:Temperature': return 'C';
-            default: return ' ';
-        }        
-    }
-    
-    private function getType($test)
-    {
-        switch ($test->type) {
-            case 'Number:Temperature': return 'Float';
-            case 'Switch': return 'Boolean';
-            default: return 'String';
-        }
-    }
-    
-    private function getSemantic($test)
-    {
-        switch ($test->type) {
-            case 'Number:Temperature': return 'air_temp';
-            case 'Switch': return 'switch';
-            default: return 'name';
-        }        
-    }
-    
-    private function getValue($test)
-    {
-        switch ($test->type) {
-            case 'Number:Temperature': 
-                $parts = explode(' ',$test->state);
-                return round($parts[0]/10-100,1);
-            default: return $test->state;    
-        }        
-    }
 }
