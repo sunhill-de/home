@@ -8,18 +8,24 @@ use Sunhill\ORM\Facades\Objects;
 use Sunhill\Collection\Objects\Locations\Floor;
 use Sunhill\Collection\Objects\Locations\Room;
 use Sunhill\Home\Modules\SunhillRoom;
+use Illuminate\Support\Facades\Schema;
 
 class HomeManager 
 {
     public function getHomeLocation()
     {
+        if (!Schema::hasTable('addresses')) {
+            return null;
+        }
         return Address::query()->where('name', 'Sonnenhügel 8')->first();
     }
     
     public function addFloors()
     {
         $location = $this->getHomeLocation();
-        
+        if (is_null($location)) {
+            return;
+        }
         $query = Floor::query()->where('part_of', $location->id)->orderBy('level', 'desc')->get();
         foreach ($query as $floor) {
             SunhillSiteManager::addDefaultSubmodule($floor->name,$floor->name,$floor->name,function($owner) use ($floor) {
