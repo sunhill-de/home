@@ -2,25 +2,30 @@
 
 namespace Sunhill\Home\Response;
 
-use Sunhill\Visual\Response\BladeResponse;
-use Sunhill\Objects\Objects\Floor;
+use Sunhill\Visual\Response\SunhillBladeResponse;
 
-class FloorResponse extends BladeResponse
+class FloorResponse extends SunhillBladeResponse
 {
     
     protected $template = 'home::floor.index';
     
     protected $floor;
     
-    public function __construct(Floor $floor)
+    public function __construct(string $floor)
     {
         $this->floor = $floor;
     }
     
     protected function prepareResponse()
     {
-        $this->params['name'] = $this->floor->name;
-        $this->params['display_name'] = $this->floor->name;
+        parent::prepareResponse();
+        $this->params['display_name'] = 'Floor';
+        $this->params['name'] = $this->floor;
+    }
+    
+    protected function getResponse()
+    {
+        return view('home::floor.index', $this->params);
     }
     
 }

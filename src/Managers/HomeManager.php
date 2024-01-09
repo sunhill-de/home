@@ -9,6 +9,7 @@ use Sunhill\Collection\Objects\Locations\Floor;
 use Sunhill\Collection\Objects\Locations\Room;
 use Sunhill\Home\Modules\SunhillRoom;
 use Illuminate\Support\Facades\Schema;
+use Sunhill\Home\Controllers\FloorController;
 
 class HomeManager 
 {
@@ -29,12 +30,7 @@ class HomeManager
         $query = Floor::query()->where('part_of', $location->id)->orderBy('level', 'desc')->get();
         foreach ($query as $floor) {
             SunhillSiteManager::addDefaultSubmodule($floor->name,$floor->name,$floor->name,function($owner) use ($floor) {
-                $owner->addAction('Index')
-                ->addControllerAction([FloorController::class, 'index'])
-                ->setVisible(true)
-                ->setRouteAddition('/Floor/{floor}')
-                ->setAlias('floor.index');
-                $this->addRooms($owner, $floor);  
+                $owner->addIndex(FloorController::class);
             });                
         } 
     }
