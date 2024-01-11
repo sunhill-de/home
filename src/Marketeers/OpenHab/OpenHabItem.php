@@ -27,7 +27,7 @@ class OpenHabItem extends PreloadedObjectItem
                 list($value) = explode(' ', $this->item_info['state']);
                 if ($value > 100) {
                     // This is a LCN Coded Temperature
-                    $value = ($value/10)-100;
+                    $value = round(($value/10)-100,1);
                 }
                 $result['value'] = (new DynamicItem())->defineValue($value)->type('float')->semantic('Temperature')->unit('Degreecelsius');
                 break;
