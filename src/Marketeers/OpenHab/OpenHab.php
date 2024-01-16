@@ -27,7 +27,7 @@ class OpenHab extends OnDemandMarketeer
     protected function initializeMarketeer()
     {
         $all_items = json_decode(HomeManager::getAllOpenHABItems(), true);
-        if (!$all_items || $all_items->result != 'OK') {
+        if (!$all_items) {
             return;
         }
         $this->addEntry('count',(new DynamicItem())->defineValue(count($all_items))->type('int')->semantic('Count'));

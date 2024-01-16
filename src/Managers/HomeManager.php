@@ -70,7 +70,9 @@ class HomeManager
             curl_setopt($handler, CURLOPT_POSTFIELDS, $payload);
         }
         
-        $result = curl_exec($handler);
+        if (!($result = curl_exec($handler))) {
+            $result = curl_error($handler);
+        }
         curl_close($handler);
         
         return $result;

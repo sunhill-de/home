@@ -52,6 +52,13 @@ class Item extends Collection
             ->set_groupeditable(false)
             ->searchable()
             ->set_sortable(true);
+        $list->enum('type',['display','temperature','light','switch','rollershutter'])
+            ->set_description('What kind of element is this')
+            ->set_displayable(true)
+            ->set_editable(true)
+            ->set_groupeditable(false)
+            ->searchable()
+            ->set_sortable(true);
     }
     
     protected static function setupInfos()
