@@ -23,6 +23,8 @@ use Sunhill\ORM\InfoMarket\Items\DynamicItem;
 
 class OpenHab extends OnDemandMarketeer
 {
+ 
+    protected $cache_philosophy = 'group';
     
     protected function initializeMarketeer()
     {
